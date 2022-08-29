@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
-
+using System.Security.Principal;
 
 namespace nm_AD_UID
 {
@@ -64,6 +64,7 @@ namespace nm_AD_UID
         /// <param name="e">Event arguments</param>
         private void Form1_Load(object sender, EventArgs e)
         {
+            //UsersUIDs = GetTestData();
             UsersUIDs = GetUsersUIDs();
             intPageSize = 50;
             intCurrentPageNoUIDs = 0;
@@ -199,9 +200,8 @@ namespace nm_AD_UID
             TableLayoutPanel tbl = new TableLayoutPanel(); int h = 20; int increment = 20; int rowNo=1;
             if (!en)
             {
-                Label lblSelAll = new Label(); lblSelAll.Text = "Select all"; lblSelAll.Width = 100; lblSelAll.Left = 120;
-                tbl.Controls.Add(lblSelAll); tbl.SetColumn(lblSelAll, 2); tbl.SetRow(lblSelAll, rowNo);
-                CheckBox chkSelAll = new CheckBox(); chkSelAll.Tag = "SelectAll";
+                AddLabelToTable(tbl, "Select all", "Select all", h, 120, 100, true, 2, rowNo);
+                CheckBox chkSelAll = new CheckBox(); chkSelAll.Tag = "SelectAll"; chkSelAll.Top = h; chkSelAll.Left = 240; chkSelAll.Enabled = false;
                 tbl.Controls.Add(chkSelAll); tbl.SetColumn(chkSelAll, 3); tbl.SetRow(chkSelAll, rowNo);
                 chkSelAll.CheckedChanged += ChBoxClicked; chkSelAll.Name = "chkSelAllNoUID"; 
                 int intTmpChecked = UsersAndUIDs.Count(a=>!a.Locked && !String.IsNullOrEmpty(a.UID));
@@ -209,20 +209,31 @@ namespace nm_AD_UID
                 if (intTmpChecked < intTmpNotLocked) { chkSelAll.Checked = false; } else { chkSelAll.Checked = true; }
                 rowNo++;
             }
+            //Make table header
+            AddLabelToTable(tbl, "samAccountName", "samAccountName", h, 10, 100, true, 1, rowNo);
+            AddLabelToTable(tbl, "uid", "uid", h, 120, 100, true, 2, rowNo);
+            AddLabelToTable(tbl, "uidNumber", "uidNumber", h, 240, 100, true, 3, rowNo);
+            AddLabelToTable(tbl, "gid", "gid", h, 360, 100, true, 4, rowNo);
+            AddLabelToTable(tbl, "gidNumber", "gidNumber", h, 480, 100, true, 5, rowNo);
+            AddLabelToTable(tbl, "UNIXHomeDirectory", "UNIXHomeDirectory", h, 600, 100, true, 6, rowNo);
+            AddLabelToTable(tbl, "loginShell", "loginShell", h, 720, 100, true, 7, rowNo);
+            rowNo++; h += increment;
             int intSkip = en? intCurrentPageUIDs * intPageSize: intCurrentPageNoUIDs * intPageSize;
             foreach (AD_Object uid in UsersAndUIDs.Skip(intSkip).Take(intPageSize))
             {
-                Label lblName = new Label(); lblName.Text = uid.samAccountName; lblName.Tag = uid.samAccountName;
-                lblName.Top = h; lblName.Left = 10; lblName.Width = 100;
-                tbl.Controls.Add(lblName); tbl.SetColumn(lblName, 1); tbl.SetRow(lblName, rowNo);
-                TextBox txtUID = new TextBox(); txtUID.Tag = uid.samAccountName; txtUID.Text = uid.UID;
-                txtUID.Top = h; txtUID.Left = 120; txtUID.Width = 100; txtUID.Enabled = !en;
-                tbl.Controls.Add(txtUID); tbl.SetColumn(txtUID, 2); tbl.SetRow(txtUID, rowNo);
+                AddLabelToTable(tbl, uid.samAccountName, uid.samAccountName, h, 10, 100, true, 1, rowNo);
+                AddTxtBoxToTable(tbl, uid.samAccountName, uid.UID, h, 120, 100, !en, 2, rowNo);
+                AddTxtBoxToTable(tbl, uid.samAccountName, uid.UIDNumber, h, 240, 100, !en, 3, rowNo);
+                AddTxtBoxToTable(tbl, uid.samAccountName, uid.GID, h, 360, 100, !en, 4, rowNo);
+                AddTxtBoxToTable(tbl, uid.samAccountName, uid.GIDNumber, h, 480, 100, !en, 5, rowNo);
+                AddTxtBoxToTable(tbl, uid.samAccountName, uid.UNIXHomeDirectory, h, 600, 100, !en, 6, rowNo);
+                AddTxtBoxToTable(tbl, uid.samAccountName, uid.LoginShell, h, 720, 100, !en, 7, rowNo);
+
                 if (!en)
                 {
-                    CheckBox chk = new CheckBox(); chk.Checked = uid.Selected; chk.Tag = uid.samAccountName;
+                    CheckBox chk = new CheckBox(); chk.Checked = uid.Selected; chk.Tag = uid.samAccountName; chk.Enabled = false;
                     chk.Top = h; chk.Left = 240; tbNoUID.Controls.Add((CheckBox)chk);
-                    tbl.Controls.Add(chk); tbl.SetColumn(chk, 3); tbl.SetRow(chk, rowNo);
+                    tbl.Controls.Add(chk); tbl.SetColumn(chk, 8); tbl.SetRow(chk, rowNo);
                     chk.CheckedChanged += ChBoxClicked;
                 }
                 h += increment; rowNo++;
@@ -248,6 +259,24 @@ namespace nm_AD_UID
             tbl.Name = en ? "tblUID" : "tblNoUID";
             return tbl;
         }
+
+        private void AddTxtBoxToTable(TableLayoutPanel tbl, String tag, String txt, 
+            int top, int L, int W, Boolean Enabled, int colNo, int rowNo)
+        {
+            TextBox txtUID = new TextBox(); txtUID.Tag = tag; txtUID.Text = txt;
+            txtUID.Top = top; txtUID.Left = L; txtUID.Width = W; txtUID.Enabled = Enabled;
+            tbl.Controls.Add(txtUID); tbl.SetColumn(txtUID, colNo); tbl.SetRow(txtUID, rowNo);
+        }
+
+        private void AddLabelToTable(TableLayoutPanel tbl, String tag, String txt,
+            int top, int L, int W, Boolean Enabled, int colNo, int rowNo)
+        {
+            Label lblName = new Label(); lblName.Text = txt; lblName.Tag = txt;
+            lblName.Top = top; lblName.Left = L; lblName.Width = W;
+            tbl.Controls.Add(lblName); tbl.SetColumn(lblName, colNo); tbl.SetRow(lblName, rowNo);
+        }
+
+
 
         /// <summary>
         /// Event triggered by selection change on the ComboBox on the second (UID) Tab
@@ -356,19 +385,31 @@ namespace nm_AD_UID
                 {
                     using (var searcher = new PrincipalSearcher(new UserPrincipal(context)))
                     {
-                        Object samAccountName; String UID; Boolean Locked;
+                        Object samAccountName; String UID; String UIDNumber; String GIDNumber;
+                        String LoginShell; String UNIXHomeDirectory; String GID; Boolean Locked;
                         foreach (var result in searcher.FindAll())
                         {
-                            Locked = false;
                             DirectoryEntry de = result.GetUnderlyingObject() as DirectoryEntry;
                             de.AuthenticationType = AuthenticationTypes.Secure;
                             samAccountName = de.Properties["samAccountName"].Value;
                             if (samAccountName != null && !String.IsNullOrEmpty(samAccountName.ToString()))
                             {
+                                Locked = false;
+                                UID = ""; UIDNumber = ""; GIDNumber = ""; 
+                                LoginShell = ""; UNIXHomeDirectory = ""; GID = "";
                                 if (de.Properties["uid"].Value != null)
-                                { UID = de.Properties["uid"].Value.ToString(); Locked = true; }
-                                else { UID = ""; }
-                                UsersUIDs.Add(new AD_Object() { samAccountName = samAccountName.ToString(), UID = UID, Locked = Locked });
+                                {
+                                    Locked = true;
+                                    UID = de.Properties["uid"].Value.ToString();
+                                    UIDNumber = de.Properties["uidNumber"].Value != null ? de.Properties["uidNumber"].Value.ToString() : "Not defined";
+                                    GID = de.Properties["gid"].Value != null ? de.Properties["gid"].Value.ToString() : "Not defined";
+                                    GIDNumber = de.Properties["gidNumber"].Value != null ? de.Properties["gidNumber"].Value.ToString() : "Not defined";
+                                    LoginShell = de.Properties["loginShell"].Value != null ? de.Properties["loginShell"].Value.ToString() : "Not defined";
+                                    UNIXHomeDirectory = de.Properties["UNIXHomeDirectory"].Value != null ? de.Properties["UNIXHomeDirectory"].Value.ToString() : "Not defined";
+                                }
+                                UsersUIDs.Add(new AD_Object() { samAccountName = samAccountName.ToString(),
+                                    UID = UID, UIDNumber = UIDNumber, GIDNumber = GIDNumber, LoginShell = LoginShell, 
+                                    UNIXHomeDirectory = UNIXHomeDirectory, GID = GID, Locked = Locked }) ;
                             }
                         }
                     }
@@ -416,6 +457,11 @@ namespace nm_AD_UID
                     {
                         Locked = true,
                         samAccountName = "Name_" + tmp,
+                        UIDNumber = "UID_N_" + tmp,
+                        GID = "GID_" + tmp,
+                        GIDNumber = "GID_N_" + tmp,
+                        LoginShell = "Shell_" + tmp,
+                        UNIXHomeDirectory = "UNIX_" + tmp,
                         Selected = false,
                         UID = tmp.ToString()
                     });
@@ -437,6 +483,11 @@ namespace nm_AD_UID
     {
         public String samAccountName { get; set; }
         public String UID { get; set; }
+        public String UIDNumber { get; set; }
+        public String GID { get; set; }
+        public String GIDNumber { get; set; }
+        public String LoginShell { get; set; }
+        public String UNIXHomeDirectory { get; set; }
         public Boolean Selected { get; set; }
         public Boolean Locked { get; set; }
     }

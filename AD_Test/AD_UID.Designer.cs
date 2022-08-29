@@ -43,13 +43,13 @@
             this.tabCtrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabCtrl.Controls.Add(this.tbNoUID);
             this.tabCtrl.Controls.Add(this.tbUID);
+            this.tabCtrl.Controls.Add(this.tbNoUID);
             this.tabCtrl.Location = new System.Drawing.Point(0, 0);
-            this.tabCtrl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabCtrl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabCtrl.Name = "tabCtrl";
             this.tabCtrl.SelectedIndex = 0;
-            this.tabCtrl.Size = new System.Drawing.Size(1064, 554);
+            this.tabCtrl.Size = new System.Drawing.Size(798, 450);
             this.tabCtrl.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabCtrl.TabIndex = 0;
             // 
@@ -57,11 +57,11 @@
             // 
             this.tbNoUID.AutoScroll = true;
             this.tbNoUID.Controls.Add(this.pnlDataNoUI);
-            this.tbNoUID.Location = new System.Drawing.Point(4, 25);
-            this.tbNoUID.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbNoUID.Location = new System.Drawing.Point(4, 22);
+            this.tbNoUID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbNoUID.Name = "tbNoUID";
-            this.tbNoUID.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tbNoUID.Size = new System.Drawing.Size(1056, 525);
+            this.tbNoUID.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbNoUID.Size = new System.Drawing.Size(790, 424);
             this.tbNoUID.TabIndex = 0;
             this.tbNoUID.Text = "Users without UID";
             this.tbNoUID.UseVisualStyleBackColor = true;
@@ -69,21 +69,20 @@
             // pnlDataNoUI
             // 
             this.pnlDataNoUI.AutoSize = true;
-            this.pnlDataNoUI.Location = new System.Drawing.Point(7, 33);
-            this.pnlDataNoUI.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlDataNoUI.Location = new System.Drawing.Point(5, 27);
             this.pnlDataNoUI.Name = "pnlDataNoUI";
-            this.pnlDataNoUI.Size = new System.Drawing.Size(687, 444);
+            this.pnlDataNoUI.Size = new System.Drawing.Size(515, 361);
             this.pnlDataNoUI.TabIndex = 0;
             // 
             // tbUID
             // 
             this.tbUID.AutoScroll = true;
             this.tbUID.Controls.Add(this.pnlDataUI);
-            this.tbUID.Location = new System.Drawing.Point(4, 25);
-            this.tbUID.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbUID.Location = new System.Drawing.Point(4, 22);
+            this.tbUID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbUID.Name = "tbUID";
-            this.tbUID.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tbUID.Size = new System.Drawing.Size(1056, 525);
+            this.tbUID.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbUID.Size = new System.Drawing.Size(790, 424);
             this.tbUID.TabIndex = 1;
             this.tbUID.Text = "Users with UID";
             this.tbUID.UseVisualStyleBackColor = true;
@@ -91,19 +90,17 @@
             // pnlDataUI
             // 
             this.pnlDataUI.AutoSize = true;
-            this.pnlDataUI.Location = new System.Drawing.Point(4, 46);
-            this.pnlDataUI.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlDataUI.Location = new System.Drawing.Point(3, 37);
             this.pnlDataUI.Name = "pnlDataUI";
-            this.pnlDataUI.Size = new System.Drawing.Size(669, 426);
+            this.pnlDataUI.Size = new System.Drawing.Size(502, 346);
             this.pnlDataUI.TabIndex = 0;
             // 
             // frmAD_UID
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tabCtrl);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmAD_UID";
             this.Text = "UID Setter";
             this.Load += new System.EventHandler(this.Form1_Load);
