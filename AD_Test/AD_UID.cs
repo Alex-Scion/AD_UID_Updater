@@ -243,7 +243,7 @@ namespace nm_AD_UID
             if (!en)
             {
                 Button btn = new Button(); btn.Text = "SaveUIDs"; btn.Width = 100; btn.Left = 120;
-                btn.Click += SaveToAD;
+                btn.Click += SaveToAD; btn.Enabled = false;
                 tbl.Controls.Add(btn); tbl.SetColumn(btn, 2); tbl.SetRow(btn, rowNo);
                 cbPager = AddPagingControls(intPagesNoUIDs, "chkNoUID", intCurrentPageNoUIDs); cbPager.Visible = intPagesNoUIDs > 0;
                 cbPager.SelectedIndexChanged += ChangePageNoUID;
